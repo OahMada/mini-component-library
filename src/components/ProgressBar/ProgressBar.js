@@ -9,70 +9,51 @@ const STYLES = {
 	small: {
 		'--height': '8px',
 		'--padding': 0,
-		'--background-border-radius': '4px',
+		'--border-radius': '4px',
 	},
 	medium: {
 		'--height': '12px',
 		'--padding': 0,
-		'--background-border-radius': '4px',
+		'--border-radius': '4px',
 	},
 	large: {
 		'--height': '24px',
 		'--padding': '4px',
-		'--background-border-radius': '8px',
+		'--border-radius': '8px',
 	},
 };
 
 const ProgressBar = ({ value, size }) => {
 	let style = STYLES[size];
-	let isComplete = value === 100;
 	return (
-		<StyledProgressBar id='progress' max='100' value={value} style={{ ...style }} isComplete={isComplete}>
-			{value}%
-		</StyledProgressBar>
+		<Wrapper style={{ ...style }} role='progressbar' aria-valuenow={value}>
+			<VisuallyHidden>{value}%</VisuallyHidden>
+			<Bar>
+				<Value style={{ '--width': value + '%' }} />
+			</Bar>
+		</Wrapper>
 	);
 };
 
-var StyledProgressBar = styled.progress`
+var Wrapper = styled.div`
 	height: var(--height);
-	width: 370px;
+	max-width: 370px;
+	background-color: ${COLORS.transparentGray15};
 	box-shadow: inset 0px 2px 4px ${COLORS.transparentGray35};
-	border-radius: var(--background-border-radius);
+	border-radius: var(--border-radius);
+	padding: var(--padding);
+`;
+
+var Bar = styled.div`
+	height: 100%;
+	border-radius: 4px;
 	overflow: hidden;
+`;
 
-	// for ::-webkit-progress-value and ::-webkit-progress-bar to take effect
-	appearance: none;
-
-	// to only apply a padding for firefox
-	@supports (-moz-appearance: none) {
-		& {
-			// get rid of firefox's default border
-			border: none;
-
-			padding: var(--padding);
-			background-color: ${COLORS.transparentGray15};
-		}
-	}
-
-	&::-webkit-progress-inner-element {
-		padding: var(--padding);
-		background-color: ${COLORS.transparentGray15};
-	}
-
-	&::-webkit-progress-bar {
-		background-color: transparent;
-		border-radius: 4px;
-		overflow: hidden;
-	}
-
-	&::-webkit-progress-value {
-		background-color: ${COLORS.primary};
-	}
-
-	&::-moz-progress-bar {
-		background-color: ${COLORS.primary};
-		border-radius: ${({ isComplete }) => (isComplete ? '4px' : '4px 0 0 4px')};
-	}
+var Value = styled.div`
+	height: 100%;
+	background-color: ${COLORS.primary};
+	width: var(--width);
 `;
 
 export default ProgressBar;

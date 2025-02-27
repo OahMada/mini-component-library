@@ -10,7 +10,7 @@ const Select = ({ label, value, onChange, children }) => {
 
 	return (
 		<Wrapper>
-			<StyledSelect value={value} onChange={onChange} style={{ '--width': displayedValue.length * 8 + 'px' }}>
+			<StyledSelect value={value} onChange={onChange}>
 				{children}
 			</StyledSelect>
 			<Decoy>
@@ -22,14 +22,17 @@ const Select = ({ label, value, onChange, children }) => {
 };
 
 var StyledSelect = styled.select`
-	font-size: 1rem;
+	/* font-size: 1rem;
 	border-radius: 8px;
 
 	// constituents: letter width + padding + icon space
 	width: calc(var(--width) + 16 * 2px + 40px);
 
 	padding: 12px 56px 12px 16px;
-	border: none;
+	border: none; */
+
+	width: 100%;
+	height: 100%;
 	// to remove the default chevron icon
 	appearance: none;
 
@@ -48,15 +51,21 @@ var Decoy = styled.div`
 	border-radius: 8px;
 	background-color: ${COLORS.transparentGray15};
 	padding: 12px 16px;
+	padding-right: 12px;
 
 	${StyledSelect}:hover + & {
 		color: ${COLORS.black};
+	}
+
+	${StyledSelect}:focus + & {
+		outline: 1px dotted #212121;
+		outline: 5px auto -webkit-focus-ring-color;
 	}
 `;
 
 var Wrapper = styled.div`
 	position: relative;
-	width: fit-content;
+	width: max-content;
 `;
 
 var StyledSpan = styled.span`
